@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    height: 100vh;
+    font-size: 15vmin;
+    font-family: 'Roboto Condensed', sans-serif;
+    white-space: nowrap;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: red;
+  }
+
+  body.left-to-right::before {
+    animation: animateLeftToRight 400ms ease-out forwards;
+  }
+  body.top-to-bottom::before {
+    animation: animateTopToBottom 400ms ease-out forwards;
+  }
+  body.right-to-left::before {
+    animation: animateRightToLeft 400ms ease-out forwards;
+  }
+  body.bottom-to-top::before {
+    animation: animateBottomToTop 400ms ease-out forwards;
+  }
+
+  #time1 {
+    color: white;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  }
+
+  #time2 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  #time2.left-to-right {
+    animation: timeLeftToRight 400ms ease-out forwards;
+  }
+  #time2.top-to-bottom {
+    animation: timeTopToBottom 400ms ease-out forwards;
+  }
+  #time2.right-to-left {
+    animation: timeRightToLeft 400ms ease-out forwards;
+  }
+  #time2.bottom-to-top {
+    animation: timeBottomToTop 400ms ease-out forwards;
+  }
+
+  #time2-inner {
+    color: red;
+    position: fixed;
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
+  }
+
+  #soundcloud {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    width: 250px;
+    height: 63px;
+  }
+
+  #giphy {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background-color: black;
+  }
+
+  #giphy.hidden {
+    display: none;
+  }
+
+  @keyframes animateLeftToRight {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0%) };
+  }
+
+  @keyframes animateTopToBottom {
+    from { transform: translateY(0%); }
+    to { transform: translateY(100%); }
+  }
+
+  @keyframes animateRightToLeft {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0%); }
+  }
+
+  @keyframes animateBottomToTop {
+    from { transform: translateY(0%); }
+    to { transform: translateY(-100%); }
+  }
+
+  @keyframes timeLeftToRight {
+    from { clip: rect(auto, auto, auto, 0vw); }
+    to { clip: rect(auto, auto, auto, 100vw); }
+  }
+
+  @keyframes timeTopToBottom {
+    from { clip: rect(100vh, auto, auto, auto); }
+    to { clip: rect(0vh, auto, auto, auto); }
+  }
+
+  @keyframes timeRightToLeft {
+    from { clip: rect(auto, 100vw, auto, auto); }
+    to { clip: rect(auto, 0vw, auto, auto); }
+  }
+
+  @keyframes timeBottomToTop {
+    from { clip: rect(auto, auto, 0vh, auto); }
+    to { clip: rect(auto, auto, 100vh, auto); }
+  }
+</style>
+
+<div id="time1">12 34 56</div>
+<div id="time2">
+  <div id="time2-inner">12 34 56</div>
+</div>
+
+<iframe id="soundcloud" width="100%" height="300" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/214788168&amp;auto_play=true&amp;hide_related=true&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false"></iframe>
+<video id="giphy" class="hidden" loop>
+
+<script>
+  var count = 0;
+  var giphyCount = 0;
+  var body = document.body;
+  var time = document.getElementById('time');
+  var time1 = document.getElementById('time1');
+  var time2 = document.getElementById('time2');
+  var time2Inner = document.getElementById('time2-inner');
+  var video = document.getElementById('giphy');
+  var videoLoaded = false;
+
+  function tick(internalCount) {
+    count = internalCount ? internalCount: count;
+
+    var animation;
+
+    if (count == 0) {
+      body.className = 'left-to-right';
+      time2.className = 'left-to-right';
+    }
+    else if (count == 1) {
+      body.className = 'top-to-bottom';
+      time2.className = 'top-to-bottom';
+    }
+    else if (count == 2) {
+      body.className = 'right-to-left';
+      time2.className = 'right-to-left';
+    }
+    else if (count == 3) {
+      body.className = 'bottom-to-top';
+      time2.className = 'bottom-to-top';
+    }
+
+    var currentTime = moment().format('hh mm ss');
+    time1.textContent = currentTime;
+    time2Inner.textContent = currentTime;
+
+    count = (count + 1) % 4;
+    giphyCount = (giphyCount + 1) % 6;
+
+    if (giphyCount == 0 && videoLoaded) {
+      giphy.classList.remove('hidden');
+      giphy.play();
+      videoLoaded = false;
+    }
+    else if (!videoLoaded && !giphy.classList.contains('hidden') && giphyCount == 0) {
+      giphy.src = '';
+      giphy.pause();
+      giphy.classList.add('hidden');
+      getNewGiphy();
+    }
+
+    giphy.addEventListener('loadeddata', function() {
+      videoLoaded = true;
+    });
+  };
+
+  tick();
+  var interval = setInterval(tick, 1000);
+  getNewGiphy();
+
+  function getNewGiphy() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=funny');
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        var json = JSON.parse(xhr.responseText);
+        giphy.src = json.data.image_mp4_url;
+      }
+    }
+  }
+</script>
