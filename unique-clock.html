@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<meta name="viewport" content="user-scalable=no">
 
 <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
@@ -52,6 +53,10 @@
     flex-direction: column;
   }
 
+  #time1.hide, #time2.hide {
+    display: none;
+  }
+
   #time1 .timezone, #time2 .timezone {
     font-size: 32px;
   }
@@ -91,6 +96,13 @@
     height: 63px;
   }
 
+  #soundcloud.start {
+    width: 62px;
+    height: 60px;
+    right: 50%;
+    bottom: 50%;
+  }
+
   #giphy {
     position: absolute;
     width: 100%;
@@ -125,31 +137,31 @@
     to { clip: rect(auto, auto, auto, 100vw); }
   }
   @keyframes timeTopToBottom {
-    from { clip: rect(100vh, auto, auto, auto); }
-    to { clip: rect(0vh, auto, auto, auto); }
+    from { clip: rect(auto, auto, 0vh, auto); }
+    to { clip: rect(auto, auto, 100vh, auto); }
   }
   @keyframes timeRightToLeft {
     from { clip: rect(auto, 100vw, auto, auto); }
     to { clip: rect(auto, 0vw, auto, auto); }
   }
   @keyframes timeBottomToTop {
-    from { clip: rect(auto, auto, 0vh, auto); }
-    to { clip: rect(auto, auto, 100vh, auto); }
+    from { clip: rect(100vh, auto, auto, auto); }
+    to { clip: rect(0vh, auto, auto, auto); }
   }
 </style>
 
-<div id="time1">
+<div id="time1" class="hide">
   <div class="time">12 34 56</div>
   <div class="timezone"></div>
 </div>
-<div id="time2">
+<div id="time2" class="hide">
   <div id="time2-inner">
     <div class="time">12 34 56</div>
     <div class="timezone"></div>
   </div>
 </div>
 
-<iframe id="soundcloud" width="100%" height="300" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/214788168&amp;auto_play=true&amp;hide_related=true&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false"></iframe>
+<iframe id="soundcloud" class="start" width="100%" height="300" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/214788168&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false"></iframe>
 <video id="giphy" class="hidden" loop>
 
 <script>
@@ -159,6 +171,7 @@
   var time1 = document.getElementById('time1');
   var time2 = document.getElementById('time2');
   var video = document.getElementById('giphy');
+  var soundcloud = document.getElementById('soundcloud');
   var videoLoaded = false;
 
   function tick(internalCount) {
@@ -197,7 +210,7 @@
       giphy.src = '';
       giphy.pause();
       giphy.classList.add('hidden');
-      getNewGiphy();
+      //getNewGiphy();
     }
 
     giphy.addEventListener('loadeddata', function() {
@@ -223,7 +236,22 @@
     timezone.textContent = tz;
   });
 
-  tick();
-  var interval = setInterval(tick, 1000);
-  getNewGiphy();
+  requestAnimationFrame(checkWindow);
+
+  function checkWindow() {
+    if (document.activeElement !== soundcloud) {
+      requestAnimationFrame(checkWindow);
+    }
+    else {
+      setTimeout(() => {
+        soundcloud.parentElement.focus();
+        tick();
+        soundcloud.classList.remove('start');
+        time1.classList.remove('hide');
+        time2.classList.remove('hide');
+        interval = setInterval(tick, 1000);
+        getNewGiphy();
+      }, 850);
+    }
+  }
 </script>
