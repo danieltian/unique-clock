@@ -88,6 +88,28 @@
     text-align: center;
   }
 
+  #click-here {
+    font-size: 24px;
+    color: red;
+    position: absolute;
+    top: calc(50% - 70px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 5px 20px;
+    background-color: white;
+    border-radius: 5px;
+  }
+  #click-here::after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 17px;
+    top: calc(100% - 5px);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 15px solid white;
+  }
+
   #soundcloud {
     position: absolute;
     right: 20px;
@@ -97,10 +119,9 @@
   }
 
   #soundcloud.start {
-    width: 62px;
-    height: 60px;
     right: 50%;
     bottom: 50%;
+    transform: translate(50%, 50%);
   }
 
   #giphy {
@@ -161,6 +182,7 @@
   </div>
 </div>
 
+<div id="click-here">Click The Play Button!</div>
 <iframe id="soundcloud" class="start" width="100%" height="300" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/214788168&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;visual=false"></iframe>
 <video id="giphy" class="hidden" loop>
 
@@ -244,14 +266,27 @@
     }
     else {
       setTimeout(() => {
+        document.body.removeChild(document.getElementById('click-here'));
         soundcloud.parentElement.focus();
         tick();
         soundcloud.classList.remove('start');
         time1.classList.remove('hide');
         time2.classList.remove('hide');
-        interval = setInterval(tick, 1000);
         getNewGiphy();
-      }, 850);
+        requestAnimationFrame(checkTime);
+      }, 900);
     }
+  }
+
+  var lastDate = 0;
+
+  function checkTime() {
+    var currentDate = moment();
+    if (currentDate - lastDate >= 1000) {
+      tick();
+      lastDate = currentDate;
+    }
+
+    requestAnimationFrame(checkTime);
   }
 </script>
