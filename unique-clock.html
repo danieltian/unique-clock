@@ -197,7 +197,7 @@
   var soundcloud = document.getElementById('soundcloud');
   var videoLoaded = false;
   var md = new MobileDetect(window.navigator.userAgent);
-  var isMobile = md.is('mobile');
+  var isMobile = !!md.mobile();
 
   function tick(internalCount) {
     count = internalCount ? internalCount: count;
