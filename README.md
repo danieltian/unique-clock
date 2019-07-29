@@ -1,8 +1,11 @@
 # Unique Clock
-Just for fun HTML5 implementation of Uniqlock: http://www.uniqlo.jp/uniqlock/
+Webapp implementation of Uniqlock by Uniqlo. The original Flash/iOS app was shut down in 2017, but you can see a video if it here:
+
+https://www.youtube.com/watch?v=rAMC1NizEU0
 
 ### Demo
-https://rawgit.com/danieltian/unique-clock/master/unique-clock.html
+https://danieltian.github.io/unique-clock/
 
-Uses the Uniqlock music from SoundCloud: https://soundcloud.com/user492027357/uniqlock-original-dance-music-compilation
-and the Giphy API to grab videos.
+This app uses the Uniqlock music from SoundCloud: https://soundcloud.com/user492027357/uniqlock-original-dance-music-compilation
+
+and Giphy for the videos.
