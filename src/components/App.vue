@@ -167,7 +167,8 @@
 
   .play-button
     position: relative
-    top: 7em
+    top: 5em
+    font-size: 1.5em
     padding: 0.2em 0.8em 0.3em 0.5em
     border: 2px solid overlayColor(50%)
     border-radius: 0.2em
