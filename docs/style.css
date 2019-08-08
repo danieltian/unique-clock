@@ -12,6 +12,11 @@
   font-family: 'Roboto Mono', sans-serif;
   font-size: 5em;
 }
+@media screen and (max-width: 420px) {
+.time[data-v-46d717cb] {
+    font-size: 19vw;
+}
+}
 .minute[data-v-46d717cb] {
   margin: 0 0.3em;
 }
@@ -19,6 +24,11 @@
   font-size: 2em;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+@media screen and (max-width: 420px) {
+.timezone[data-v-46d717cb] {
+    font-size: 7.5vw;
+}
 }
 
 .music[data-v-06073fa5] {

@@ -11,7 +11,7 @@
     Music(v-show="isMusicStarted" :isMusicStarted="isMusicStarted" @tick="tick" @play="onMusicPlay" @pause="onMusicPause")
 
     .button-wrapper(v-if="!isMusicStarted")
-      a.play-button(@click="startMusic") ⯈ Music
+      a.play-button(@click="startMusic") &#11208; Music
 </template>
 
 <script>

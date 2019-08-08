@@ -40,6 +40,9 @@
     font-family: 'Roboto Mono', sans-serif;
     font-size: 5em
 
+    +mobile()
+      font-size: 19vw
+
   .minute
     margin: 0 0.3em
 
@@ -47,4 +50,7 @@
     font-size: 2em
     text-transform: uppercase
     letter-spacing: 0.05em
+
+    +mobile()
+      font-size: 7.5vw
 </style>
