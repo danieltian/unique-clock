@@ -191,6 +191,7 @@
   .overlay
     fillScreen()
     overflow: hidden
+    will-change: transform
 
     &.lower
       background-color: white

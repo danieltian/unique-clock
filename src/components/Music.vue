@@ -74,5 +74,5 @@
     width: 20px
     height: 20px
     transition: width 100ms ease-out, height 100ms ease-out
-    will-change: transform
+    will-change: width, height
 </style>
